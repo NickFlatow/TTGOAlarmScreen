@@ -10,7 +10,6 @@
 #include <WebServer.h>
 #include <flarg.h>
 
-
 #define BUTTON1PIN 35
 #define BUTTON2PIN 0
 
