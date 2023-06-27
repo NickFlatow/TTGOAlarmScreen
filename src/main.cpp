@@ -3,12 +3,17 @@
 short colors[2]={TFT_BLACK,TFT_GREEN};  //first colour is color of background , second is color of digit
 
 
-int boxSize=20;   //size of each box
-byte space=8; // space between boxes
+// int boxSize=20;   //size of each box
+// byte space=8; // space between boxes
+// int fromTop=8;  //positon x
+// int fromLeft=10;  //position y
+// int Round=1;
+
+int boxSize=10;   //size of each box
+byte space=4; // space between boxes
 int fromTop=8;  //positon x
 int fromLeft=10;  //position y
 int Round=1;
-
 // short number=0;
 int digits=0;
 
@@ -90,6 +95,10 @@ void printTime() {
 void numberStuff() {
   timeClient.update();
   String numberString = timeClient.getHours() < 10 ? "0" + String(timeClient.getHours()) : String(timeClient.getHours());
+  numberString += ":";
+  //concate mins
+  numberString += timeClient.getMinutes() < 10 ? "0" + String(timeClient.getMinutes()) : String(timeClient.getMinutes());
+
   // String numberString = String(number);
   // Serial.print("numberString: ");
   // Serial.println(numberString);
@@ -101,10 +110,16 @@ void numberStuff() {
    for(int column=0;column < NUMBER_OF_COLUMNS;column++)
     for(int row=0; row < NUMBER_OF_ROWS; row++) {
         String substring = numberString.substring(numbers, numbers+1);
+        // Serial.print("substring: ");
+        // Serial.println(substring);
+        if (substring == ":") {
+          // Serial.println("found :");
+          substring = "10";
+        }
         int intSubString = substring.toInt();
         // int intSubString = timeClient.getHours();
-        // Serial.print("substring: ");
-        // Serial.println(intSubString);
+        Serial.print("substring: ");
+        Serial.println(intSubString);
         // Serial.print("numbers: ");
         // Serial.println(numbers);
 
@@ -113,7 +128,10 @@ void numberStuff() {
         int y = fromTop+(column*boxSize)+(column*space);
         int w = boxSize;
         int h = Round;
-        int color = colors[digit[intSubString][column][row]]; 
+        int color = colors[digit[intSubString][column][row]];
+        //serial output digit 
+        Serial.print("digit: ");
+        Serial.println(digit[intSubString][column][row]); 
 
         //TODO IF numberString > 0 add space between numbers
 
@@ -142,39 +160,52 @@ void numberStuff() {
         // tft.fillRoundRect(10,10,10,10,10,TFT_RED);
         //delay(20);
   }
-  for(int numbers=0; numbers < numberString.length();numbers++)
-   for(int column=0;column < 1;column++)
-    for(int row=0; row < NUMBER_OF_ROWS; row++) {
-        int x = 190 + (numbers*(boxSize*4))+fromLeft+(row*boxSize)+(row*space);
-        int y = fromTop+(column*boxSize)+(column*space);
-        int w = boxSize;
-        int h = Round;
-        int color = colors[colon[1][column][row]]; 
-
-        Serial.print("x: ");
-        Serial.println(x);
-        Serial.print("y: ");
-        Serial.println(y);
-        //add row and column
-        Serial.print("row: ");
-        Serial.println(row);
-        Serial.print("column: ");
-        Serial.println(column);
-
-        Serial.print("sizee: ");
-        Serial.println(boxSize);
-        Serial.print("w: ");
-        Serial.println(w);
-        Serial.print("h: ");
-        Serial.println(h);
-        Serial.print("color: ");
-        Serial.println(color);
-        Serial.println("===================");
 
 
+  // for(int numbers=0; numbers < 1;numbers++) {
+  //  for(int column=0;column < NUMBER_OF_COLUMNS;column++) {
+  //   for(int row=0; row < NUMBER_OF_ROWS; row++) {
+  //       //160 is just trial and error
+  //       //can we calculate this from the above loop?
+  //       //where did x leave off?
+  //       int x = 160 + fromLeft+(row*boxSize)+(row*space);
+  //       int y = fromTop+(column*boxSize)+(column*space);
+  //       int w = boxSize;
+  //       int h = Round;
+  //       int color = colors[colon[0][column][row]]; 
+  //       // int color = colors[colon[column][row]]; 
+  //       // Serial.println("+++++++++++");
+  //       // Serial.println(colon[0][1][1]);
+  //       // // Serial.println(colon[1][1]);
+  //       // Serial.println("+++++++++++");
 
-        tft.fillRoundRect(x,y,10,10,10,color);
-    }
+
+  //       // Serial.print("x: ");
+  //       // Serial.println(x);
+  //       // Serial.print("y: ");
+  //       // Serial.println(y);
+  //       // //add row and column
+  //       // Serial.print("row: ");
+  //       // Serial.println(row);
+  //       // Serial.print("column: ");
+  //       // Serial.println(column);
+
+  //       // Serial.print("sizee: ");
+  //       // Serial.println(boxSize);
+  //       // Serial.print("w: ");
+  //       // Serial.println(w);
+  //       // Serial.print("h: ");
+  //       // Serial.println(h);
+  //       // Serial.print("color: ");
+  //       // Serial.println(color);
+  //       // Serial.print("colon: ");
+  //       // Serial.println(colon[1][column][row]);
+  //       // Serial.println("===================");
+
+  //       tft.fillRoundRect(x,y,10,10,10,color);
+  //   }
+  //  }
+  // }
   delay(400);
   // number++;
 
