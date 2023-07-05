@@ -15,6 +15,10 @@
 #include <WebServer.h>
 #include <flarg.h>
 
+// read from seraial
+#include <HardwareSerial.h>
+#include <iostream>
+
 #define BUTTON1PIN 35
 #define BUTTON2PIN 0
 #define UTC_OFFEST_IN_SECONDS 3600 * 5 * -1 //UTC -5 hours
@@ -42,7 +46,9 @@ void wifiSetup();
 void screenSetup();
 void buttonSetup();
 void printTime();
-
+void socket();
+void printMiddle(String text);
+std::string waitForSerialInput();
 
 // interrupt service routines
 void IRAM_ATTR toggleButton1() {
@@ -50,10 +56,9 @@ void IRAM_ATTR toggleButton1() {
     Serial.println(F("Button 1 pressed"));
     lastDebounceButton1 = millis();
   }
-  
 }
 void IRAM_ATTR toggleButton2() {
-  if ( (millis() - lastDebounceButton1) > debounceDelay) {
+  if ( (millis() - lastDebounceButton2) > debounceDelay) {
     Serial.println(F("Button 2 pressed"));
     lastDebounceButton1 = millis();
   }
